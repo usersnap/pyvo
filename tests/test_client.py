@@ -9,6 +9,8 @@ describe the Pyvo client
     it can return the underlying Requests response
     it maps attributes to URL segments
     it raises an exception for 404s
+    it returns a resource key with a successful response
+    it produces standalone instances
     --TODO--
     it reads an API token from the environment
     it helps implementers manage oauth
@@ -43,3 +45,16 @@ def describe_the_pyvo_client():
         from pyvo import ResourceNotFound
         with pytest.raises(ResourceNotFound):
             r1 = client.zod.get()
+
+    def it_returns_a_resource_key_with_a_successful_response(client):
+        r1 = client.projects.get(return_json=False)
+        assert r1.resource_key == 'project'
+
+    def it_produces_standalone_instances(client):
+        project = client.projects(id='1040058')
+
+        project_json = project.get(return_json=False)
+        assert project_json.status_code == 200
+
+        labels = project.labels.get(return_json=False)
+        assert labels.status_code == 200
