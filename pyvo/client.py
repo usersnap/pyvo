@@ -89,8 +89,10 @@ class Request(object):
         debug(prepped, prepped.url)
 
         resp = self.session.send(prepped)
-
         self.sent = True
+
+        if resp.status_code == 404:
+            raise ResourceNotFound(resp.content)
 
         if return_json:
             return resp.json()

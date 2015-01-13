@@ -40,4 +40,6 @@ def describe_the_pyvo_client():
         assert r2
 
     def it_raises_an_exception_for_404s(client):
-        pass
+        from pyvo import ResourceNotFound
+        with pytest.raises(ResourceNotFound):
+            r1 = client.zod.get()
