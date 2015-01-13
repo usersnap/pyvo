@@ -6,7 +6,6 @@ setup(
     name='pyvo',
     version='.'.join(map(str, VERSION)),
     description='Pivotal Tracker REST API v5 client',
-    long_description=open(os.path.join(os.path.dirname(__file__), 'README.md')).read(),
     keywords='python pivotal tracker',
     author='Michael Bourke',
     author_email='git@elementality.com',

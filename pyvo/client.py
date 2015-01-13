@@ -86,10 +86,10 @@ class Request(object):
             self.session = requests.Session()
 
         prepped = self.auth_callable(self.session.prepare_request(request))
+        debug(prepped, prepped.url)
 
         resp = self.session.send(prepped)
 
-        debug(prepped, prepped.url)
         self.sent = True
 
         if return_json:
@@ -104,7 +104,6 @@ class Request(object):
             return self.augment_request(k, reset=self.sent)
 
     def __call__(self, id=None, **kwargs):
-        self.called = True
         if self.uriparts[-1] in HTTP_VERBS:
             method = self.uriparts.pop()
             if id is not None:
@@ -115,10 +114,6 @@ class Request(object):
                 return self.augment_request(id, reset=self.sent)
             else:
                 return self
-
-    def reset(self):
-        self.uriparts = self.baseparts
-        debug(self.uriparts)
 
 
 class Client(object):
