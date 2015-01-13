@@ -141,25 +141,3 @@ class Client(object):
             request = self.request(uriparts=[k])
             return request
 
-
-if __name__ == '__main__':
-    # client = Client()
-    # # resp = client.get('1138154', 'memberships', return_json=False)
-    # resp = client.zod(return_json=False)
-    # # resp = client.search('1138154', 'type:release', return_json=False)
-    # debug(resp.status_code, resp.request.url, resp.content)
-    # debug(list((p['username'], p['id']) for p in (m['person'] for m in resp)))
-    client = Client(base_url='https://www.pivotaltracker.com/services/v5/',
-        token=PIVOTAL_TRACKER_TOKEN)
-    req = client.request()
-    # resp = req.projects('1138154').labels(9308508).get()
-    # resp = req.projects('1138154').labels.get()
-    # resp = client.projects('1138154').get()
-    project = client.projects('1138154')
-    r1 = project.labels.get(return_json=False)
-    r2 = project.labels('9308508').get(return_json=False)
-    r3 = project.members.get(return_json=False)
-    # resp = req.projects.get()
-    debug(r1.content, r1.resource_key)
-    debug(r2.content, r2.resource_key)
-    debug(r3.content, r3.resource_key)
