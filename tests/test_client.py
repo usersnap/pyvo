@@ -48,7 +48,7 @@ def describe_the_pyvo_client():
 
     def it_returns_a_resource_key_with_a_successful_response(client):
         r1 = client.projects.get(return_json=False)
-        assert r1.resource_key == 'project'
+        assert r1.resource_key == 'projects'
 
     def it_produces_standalone_instances(client):
         project = client.projects(id='1040058')
