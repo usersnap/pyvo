@@ -2,6 +2,13 @@ import os
 from setuptools import setup, find_packages
 from pyvo import VERSION, DEV_STATUS
 
+tests_require = [
+    "pytest",
+    "pytest-describe",
+    "pytest-bdd",
+    "pytest-greendots"
+]
+
 setup(
     name='pyvo',
     version='.'.join(map(str, VERSION)),
@@ -26,4 +33,5 @@ setup(
         'requests',
         'purl'
     ],
+    tests_require
 )

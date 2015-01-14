@@ -119,7 +119,8 @@ class Request(object):
 
 
 class Client(object):
-    def __init__(self, token, base_url):
+    def __init__(self, token,
+            base_url='https://www.pivotaltracker.com/services/v5/'):
         self.token = token
         self.base_url = base_url
         self.session = requests.Session()
