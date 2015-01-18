@@ -16,6 +16,7 @@ describe the Pyvo client
     it helps implementers manage oauth
 '''
 
+@pytest.mark.client
 def describe_the_pyvo_client():
 
     @pytest.fixture
