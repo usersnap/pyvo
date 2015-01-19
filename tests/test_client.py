@@ -2,7 +2,7 @@ import pytest
 import json
 import requests
 
-from pyvo.client import ResponseType
+from pyvo.client import Client, ResponseType, ResourceNotFound
 
 '''
 describe the Pyvo client
@@ -23,7 +23,6 @@ def describe_the_pyvo_client():
 
     @pytest.fixture
     def client():
-        from pyvo import Client
         return Client('2a2c2003c8e45a643ad8af2b066b3e71',
             'https://www.pivotaltracker.com/services/v5/')
 
@@ -45,7 +44,6 @@ def describe_the_pyvo_client():
         assert r2
 
     def it_raises_an_exception_for_404s(client):
-        from pyvo import ResourceNotFound
         with pytest.raises(ResourceNotFound):
             r1 = client.zod.get(response_type=ResponseType.JSON)
 
