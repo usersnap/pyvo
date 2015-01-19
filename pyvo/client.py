@@ -68,18 +68,6 @@ class Request(object):
             self.baseparts = self.uriparts
             return self
 
-    @property
-    def resource_key(self):
-        def filter_(arg):
-            try:
-                _ = int(arg)
-            except ValueError:
-                return arg not in HTTP_VERBS
-            else:
-                return False
-
-        return [p for p in self.uriparts if filter_(p)][-1]
-
     def _send(self, method, response_type, **kwargs):
 
         url = purl.URL(self.base_url)
@@ -88,12 +76,7 @@ class Request(object):
         for p in self.uriparts:
             url = url.add_path_segment(p)
 
-        def hook(r, *args, **kwargs):
-            r.resource_key = self.resource_key
-
-        hooks = {"response": hook}
-
-        request = requests.Request(method, url, hooks=hooks, **kwargs)
+        request = requests.Request(method, url, **kwargs)
 
         if self.session is None:
             self.session = requests.Session()
