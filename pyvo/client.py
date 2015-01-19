@@ -2,6 +2,7 @@ import requests
 import purl
 
 from model import generate_resources
+
 import logging
 
 logger = logging.getLogger(__name__)
@@ -15,6 +16,7 @@ logger.setLevel(logging.WARN)
 def debug(*args):
     msg = ", ".join(map(str, args))
     logger.debug(msg)
+
 
 PIVOTAL_TRACKER_TOKEN = '2a2c2003c8e45a643ad8af2b066b3e71'
 
@@ -37,29 +39,33 @@ class Request(object):
     """docstring for Request"""
     def __init__(self, method=None, session=None,
             auth_callable=(lambda x: x), base_url=None,
-            uriparts=None, sent=False):
+            uriparts=None, baseparts=None, sent=False, client=None):
         self.method = method
         self.session = session
         self.auth_callable = auth_callable
         self.base_url = base_url
         self.uriparts = uriparts or []
-        self.baseparts = self.uriparts
-        self.sent = sent
+        self.baseparts = baseparts or []
+        self.sent = sent,
+        self.client = client
 
     def augment_request(self, arg, reset=False):
         debug("augment_request", reset, arg, self.uriparts, self.baseparts)
         if reset:
-            self.uriparts = self.baseparts
+            self.uriparts = self.baseparts[:]
+            self.uriparts.append(arg)
             return Request(
                 method=self.method,
                 session=self.session,
                 auth_callable=self.auth_callable,
                 base_url=self.base_url,
                 uriparts=self.uriparts,
+                baseparts=self.baseparts,
                 sent=False
             )
         else:
             self.uriparts.append(arg)
+            self.baseparts = self.uriparts
             return self
 
     @property
@@ -74,12 +80,11 @@ class Request(object):
 
         return [p for p in self.uriparts if filter_(p)][-1]
 
-    def _send(self, method, **kwargs):
-        return_json = kwargs.pop('return_json', True)
+    def _send(self, method, response_type, **kwargs):
 
         url = purl.URL(self.base_url)
         # debug(resource_ids)
-        debug("entered send", self.uriparts)
+        debug("entered send", self.uriparts, self.baseparts)
         for p in self.uriparts:
             url = url.add_path_segment(p)
 
@@ -102,10 +107,12 @@ class Request(object):
         if resp.status_code == 404:
             raise ResourceNotFound(resp.content)
 
-        if return_json:
+        if response_type == ResponseType.JSON:
             return resp.json()
-        else:
+        elif response_type == ResponseType.RAW:
             return resp
+        else:
+            return generate_resources(resp, self.client)
 
     def __getattr__(self, k):
         try:
@@ -113,12 +120,13 @@ class Request(object):
         except AttributeError:
             return self.augment_request(k, reset=self.sent)
 
-    def __call__(self, id=None, **kwargs):
+    def __call__(self, id=None,
+            response_type=ResponseType.DEFAULT, **kwargs):
         if self.uriparts[-1] in HTTP_VERBS:
             method = self.uriparts.pop()
             if id is not None:
                 self.augment_request(id)
-            return self._send(method, **kwargs)
+            return self._send(method, response_type, **kwargs)
         else:
             if id is not None:
                 return self.augment_request(id, reset=self.sent)
@@ -141,7 +149,7 @@ class Client(object):
 
     def request(self, **kwargs):
         return Request(session=self.session, auth_callable=self.token_auth,
-            base_url=self.base_url, **kwargs)
+            base_url=self.base_url, client=self, **kwargs)
 
     def __getattr__(self, k):
         try:
