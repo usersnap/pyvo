@@ -1,6 +1,7 @@
 import requests
 import purl
 
+from model import generate_resources
 import logging
 
 logger = logging.getLogger(__name__)
@@ -24,6 +25,13 @@ class ResourceNotFound(Exception):
     pass
 
 HTTP_VERBS = ('head', 'options', 'get', 'post', 'put', 'patch', 'delete')
+
+class ResponseType(object):
+    RAW = "raw"
+    JSON = "json"
+    RESOURCE = "resource"
+
+ResponseType.DEFAULT = ResponseType.RESOURCE
 
 class Request(object):
     """docstring for Request"""
