@@ -46,7 +46,7 @@ class Request(object):
         self.base_url = base_url
         self.uriparts = uriparts or []
         self.baseparts = baseparts or []
-        self.sent = sent,
+        self.sent = sent
         self.client = client
 
     def augment_request(self, arg, reset=False):

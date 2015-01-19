@@ -24,7 +24,7 @@ def generate_resources(response, client=None):
         if resource_class is None:
             raise ModelNotFound("No model found for {}".format(kind))
 
-        return resource_class.from_request(request=originating_request, **resource)
+        return resource_class(**resource)
 
     response = response.json()
 

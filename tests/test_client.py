@@ -49,10 +49,6 @@ def describe_the_pyvo_client():
         with pytest.raises(ResourceNotFound):
             r1 = client.zod.get(response_type=ResponseType.JSON)
 
-    def it_returns_a_resource_key_with_a_successful_response(client):
-        r1 = client.projects.get(response_type=ResponseType.RAW)
-        assert r1.resource_key == 'projects'
-
     def it_produces_standalone_instances(client):
         project = client.projects(id='1040058')
 
