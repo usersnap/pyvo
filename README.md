@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/iter8ve/pyvo.svg?branch=master)](https://travis-ci.org/iter8ve/pyvo)
+
 # Introduction
 
 Pyvo is a Python client for the Pivotal Tracker v5 API that uses the Requests HTTP library under the hood. It has three design goals:
