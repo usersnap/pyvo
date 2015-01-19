@@ -1,5 +1,7 @@
-from base import PivotalResource, Instantiated, TimeZone, fields, \
+from base import PivotalResource, Instantiated, fields, \
     OneOf, PostValidators, RequiredOnPost
+from metadata import TimeZone
+
 
 class Project(Instantiated, PivotalResource):
 

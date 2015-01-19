@@ -1,5 +1,7 @@
-from base import PivotalResource, Instantiated, TimeZone, fields
+from base import PivotalResource, Instantiated, fields
+from metadata import TimeZone
 from project import MembershipSummary
+
 
 class Me(Instantiated, PivotalResource):
 
@@ -13,3 +15,12 @@ class Me(Instantiated, PivotalResource):
     workspace_ids = fields.ListField()
     email = fields.StringField()
     receives_in_app_notifications = fields.BoolField()
+
+
+class Person(Instantiated, PivotalResource):
+
+    name = fields.StringField(required=True)
+    email = fields.StringField(required=True)
+    initials = fields.StringField()
+    username = fields.StringField()
+    kind = fields.StringField()

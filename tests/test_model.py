@@ -41,6 +41,7 @@ project_input = {
 
 me_input = {u'username': u'bourke', u'kind': u'me', u'has_google_identity': False, u'name': u'Michael Bourke', u'updated_at': u'2015-01-16T23:27:23Z', u'created_at': u'2013-02-08T03:31:37Z', u'time_zone': {u'olson_name': u'America/New_York', u'kind': u'time_zone', u'offset': u'-05:00'}, u'email': u'michael@iter8ve.com', u'receives_in_app_notifications': True, u'api_token': u'2a2c2003c8e45a643ad8af2b066b3e71', u'id': 914193, u'projects': [{u'kind': u'membership_summary', u'project_name': u'Globurg 1', u'project_color': u'91a400', u'last_viewed_at': u'2013-11-19T17:29:31Z', u'role': u'owner', u'project_id': 756957, u'id': 2819161}, {u'kind': u'membership_summary', u'project_name': u'Marco Polo', u'project_color': u'74a4d7', u'last_viewed_at': u'2013-05-04T14:12:44Z', u'role': u'owner', u'project_id': 816071, u'id': 3056727}, {u'kind': u'membership_summary', u'project_name': u'Globurg Forward', u'project_color': u'71be00', u'last_viewed_at': u'2013-06-24T18:22:57Z', u'role': u'owner', u'project_id': 818429, u'id': 3067627}, {u'kind': u'membership_summary', u'project_name': u'Event search', u'project_color': u'ac3f65', u'last_viewed_at': u'2014-12-02T15:31:52Z', u'role': u'owner', u'project_id': 973294, u'id': 3750076}, {u'kind': u'membership_summary', u'project_name': u'design chores', u'project_color': u'555555', u'last_viewed_at': u'2014-12-12T21:57:30Z', u'role': u'owner', u'project_id': 1040058, u'id': 4058924}, {u'kind': u'membership_summary', u'project_name': u'Website', u'project_color': u'8100ea', u'last_viewed_at': u'2014-08-04T14:00:51Z', u'role': u'owner', u'project_id': 1137686, u'id': 4515778}, {u'kind': u'membership_summary', u'project_name': u'Search Tool', u'project_color': u'e46642', u'last_viewed_at': u'2014-08-04T13:26:45Z', u'role': u'owner', u'project_id': 1137688, u'id': 4515782}, {u'kind': u'membership_summary', u'project_name': u'ALG', u'project_color': u'ce9f00', u'last_viewed_at': u'2015-01-16T17:06:07Z', u'role': u'owner', u'project_id': 1138154, u'id': 4516928}], u'initials': u'MSB'}
 
+@pytest.mark.model
 def describe_project_schema():
 
     def it_loads_json():
@@ -53,6 +54,7 @@ def describe_project_schema():
             project.validate_on_post()
         assert "Value required on POST operation." in excinfo.value
 
+@pytest.mark.model
 def describe_me_resource():
 
     def it_loads_json():

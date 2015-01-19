@@ -1,5 +1,7 @@
-from base import PivotalResource, Instantiated, TimeZone, fields, \
+from base import PivotalResource, Instantiated, fields, \
     OneOf, PostValidators, RequiredOnPost
+from metadata import TimeZone, Label
+
 
 
 class Story(Instantiated, PivotalResource):
@@ -16,12 +18,11 @@ class Story(Instantiated, PivotalResource):
     accepted_at = fields.DateTimeField()
     deadline = fields.DateTimeField()
     requested_by_id = fields.IntField()
-    owned_by_id = fields.IntField()
-    owner_ids = fields.ListField()
-    label_ids = fields.ListField()
-    task_ids = fields.ListField()
-    follower_ids = fields.ListField()
-    comment_ids = fields.ListField()
+    owner_ids = fields.ListField(int)
+    label_ids = fields.ListField(int)
+    task_ids = fields.ListField(int)
+    follower_ids = fields.ListField(int)
+    comment_ids = fields.ListField(int)
     before_id = fields.IntField()
     after_id = fields.IntField()
     integration_id = fields.IntField()
@@ -34,3 +35,22 @@ class Task(Instantiated, PivotalResource):
     description = fields.StringField(validators=PostValidators(RequiredOnPost()))
     complete = fields.BoolField()
     position = fields.IntField()
+
+
+class Epic(Instantiated, PivotalResource):
+    project_id = fields.IntField()
+    name = fields.StringField(validators=PostValidators(RequiredOnPost()))
+    label_id = fields.IntField()
+    label = fields.EmbeddedField(Label)
+    description = fields.StringField()
+    comment_ids = fields.ListField()
+    follower_ids = fields.ListField()
+    created_at = fields.DateTimeField()
+    updated_at = fields.DateTimeField()
+    after_id = fields.IntField()
+    before_id = fields.IntField()
+    past_done_story_estimates = fields.FloatField()
+    past_done_stories_count = fields.IntField()
+    past_done_stories_no_point_count = fields.IntField()
+    url = fields.StringField()
+

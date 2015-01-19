@@ -2,6 +2,8 @@ import pytest
 import json
 import requests
 
+from pyvo.client import ResponseType
+
 '''
 describe the Pyvo client
     it returns valid responses
@@ -26,17 +28,17 @@ def describe_the_pyvo_client():
             'https://www.pivotaltracker.com/services/v5/')
 
     def it_returns_valid_responses(client):
-        r1 = client.me.get(return_json=False)
-        r2 = client.projects.get(return_json=False)
+        r1 = client.me.get(response_type=ResponseType.RAW)
+        r2 = client.projects.get(response_type=ResponseType.RAW)
 
         assert r1.status_code == r2.status_code == 200
 
     def it_can_return_json(client):
-        r1 = client.me.get()
+        r1 = client.me.get(response_type=ResponseType.JSON)
         assert json.dumps(r1)
 
     def it_maps_attributes_to_url_segments(client):
-        r1 = client.projects(id='1040058').get()
+        r1 = client.projects(id='1040058').get(response_type=ResponseType.JSON)
         assert r1['kind'] == 'project'
 
         r2 = client.projects.labels(project_id='1040058', label_id='81231')
@@ -45,17 +47,39 @@ def describe_the_pyvo_client():
     def it_raises_an_exception_for_404s(client):
         from pyvo import ResourceNotFound
         with pytest.raises(ResourceNotFound):
-            r1 = client.zod.get()
+            r1 = client.zod.get(response_type=ResponseType.JSON)
 
     def it_returns_a_resource_key_with_a_successful_response(client):
-        r1 = client.projects.get(return_json=False)
+        r1 = client.projects.get(response_type=ResponseType.RAW)
         assert r1.resource_key == 'projects'
 
     def it_produces_standalone_instances(client):
         project = client.projects(id='1040058')
 
-        project_json = project.get(return_json=False)
+        project_json = project.get(response_type=ResponseType.RAW)
         assert project_json.status_code == 200
 
-        labels = project.labels.get(return_json=False)
+        labels = project.labels.get(response_type=ResponseType.RAW)
         assert labels.status_code == 200
+
+    @pytest.mark.resource
+    def it_produces_resource_entities(client):
+        from pyvo.model.project import Project
+        from pyvo.model.metadata import Label
+        from pyvo.model.story import Story
+
+        project = client.projects(id='1040058')
+
+        p = project.get()
+        assert isinstance(p, Project)
+
+        labels = project.labels.get()
+        for label in labels:
+            assert isinstance(label, Label)
+            assert label.project_id == 1040058
+
+        stories = project.stories.get()
+        for story in stories:
+            assert isinstance(story, Story)
+            assert story.story_type in ('feature', 'bug', 'chore', 'release')
+
