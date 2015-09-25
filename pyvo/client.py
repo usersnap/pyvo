@@ -11,7 +11,7 @@ handler.setFormatter(logging.Formatter(
     '%(levelname)s [%(asctime)s] -- %(message)s'
 ))
 logger.addHandler(handler)
-logger.setLevel(logging.WARN)
+logger.setLevel(logging.DEBUG)
 
 def debug(*args):
     msg = ", ".join(map(str, args))
@@ -39,7 +39,8 @@ class Request(object):
     """docstring for Request"""
     def __init__(self, method=None, session=None,
             auth_callable=(lambda x: x), base_url=None,
-            uriparts=None, baseparts=None, sent=False, client=None):
+            uriparts=None, baseparts=None, sent=False,
+            client=None):
         self.method = method
         self.session = session
         self.auth_callable = auth_callable
@@ -53,7 +54,8 @@ class Request(object):
         debug("augment_request", reset, arg, self.uriparts, self.baseparts)
         if reset:
             self.uriparts = self.baseparts[:]
-            self.uriparts.append(arg)
+            if arg is not None:
+                self.uriparts.append(arg)
             return Request(
                 method=self.method,
                 session=self.session,
@@ -68,11 +70,15 @@ class Request(object):
             self.baseparts = self.uriparts
             return self
 
+    def reset_request(self):
+        self.augment_request(None, reset=True)
+
     def _send(self, method, response_type, **kwargs):
 
         url = purl.URL(self.base_url)
         # debug(resource_ids)
         debug("entered send", self.uriparts, self.baseparts)
+
         for p in self.uriparts:
             url = url.add_path_segment(p)
 
@@ -86,6 +92,10 @@ class Request(object):
 
         resp = self.session.send(prepped)
         self.sent = True
+
+        # remove post endpoint for subsequent requests
+        if method == 'post':
+            post_endpoint = self.uriparts.pop()
 
         if resp.status_code == 404:
             raise ResourceNotFound(resp.content)
@@ -113,6 +123,8 @@ class Request(object):
         else:
             if id is not None:
                 return self.augment_request(id, reset=self.sent)
+            elif self.method == 'post':
+                return self.reset_request()
             else:
                 return self
 
