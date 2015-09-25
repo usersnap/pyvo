@@ -1,3 +1,5 @@
+from error import Error
+
 class ModelNotFound(Exception):
     pass
 
@@ -6,7 +8,6 @@ def generate_resources(response, client=None):
     from project import Project
     from story import Story, Epic
     from metadata import Label
-
 
     def generate(resource):
         kind = resource['kind']
@@ -18,7 +19,8 @@ def generate_resources(response, client=None):
             'me': Me,
             'story': Story,
             'epic': Epic,
-            'label': Label
+            'label': Label,
+            'error': Error
         }.get(kind)
 
         if resource_class is None:
