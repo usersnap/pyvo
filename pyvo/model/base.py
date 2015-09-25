@@ -31,6 +31,9 @@ class Instantiated(object):
     updated_at = fields.DateTimeField()
     # Time of last update. This field is read only.
 
+    def __str__(self):
+        return "id='{}'".format(self.id)
+
 
 class OneOf(object):
     """Ensure StringField value belongs to a given enum"""
