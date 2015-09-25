@@ -11,7 +11,7 @@ handler.setFormatter(logging.Formatter(
     '%(levelname)s [%(asctime)s] -- %(message)s'
 ))
 logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.WARN)
 
 def debug(*args):
     msg = ", ".join(map(str, args))
