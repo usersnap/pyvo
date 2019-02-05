@@ -18,6 +18,7 @@ class Story(Instantiated, PivotalResource):
     accepted_at = fields.DateTimeField()
     deadline = fields.DateTimeField()
     requested_by_id = fields.IntField()
+    owned_by_id = fields.IntField()
     owner_ids = fields.ListField(int)
     label_ids = fields.ListField(int)
     task_ids = fields.ListField(int)
