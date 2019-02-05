@@ -55,3 +55,18 @@ class MembershipSummary(Instantiated, PivotalResource):
     )
     last_viewed_at = fields.DateTimeField()
 
+class ProjectMembership(Instantiated, PivotalResource):
+
+    created_at = fields.DateTimeField()
+    updated_at = fields.DateTimeField()
+    person_id = fields.IntField()
+    project_id = fields.IntField()
+    role = fields.StringField(
+        validators=OneOf('owner',
+            'member', 'viewer', 'inactive'))
+    project_color = fields.StringField()
+    favorite = fields.BoolField()
+    last_viewed_at = fields.DateTimeField()
+    wants_comment_notification_emails = fields.BoolField()
+    will_receive_mention_notifications_or_emails = fields.BoolField()
+    kind = fields.StringField()
