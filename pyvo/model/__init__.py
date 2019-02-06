@@ -6,7 +6,7 @@ class ModelNotFound(Exception):
 def generate_resources(response, client=None):
     from person import Me, Person, ProjectMembership
     from project import Project
-    from story import Story, Epic
+    from story import Story, Epic, Task
     from metadata import Label
 
     def generate(resource):
@@ -22,7 +22,8 @@ def generate_resources(response, client=None):
             'label': Label,
             'error': Error,
             'project_membership': ProjectMembership,
-            'person': Person
+            'person': Person,
+            'task': Task
         }.get(kind)
 
         if resource_class is None:
