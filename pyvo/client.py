@@ -139,7 +139,6 @@ class Client(object):
     def token_auth(self, request):
         request.headers.update({
             'x-trackertoken': self.token,
-            'Content-Type': 'application/json',
         })
         return request
 
