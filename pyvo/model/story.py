@@ -77,7 +77,7 @@ class Comment(Instantiated, PivotalResource):
     person_id = fields.IntField()
     created_at = fields.DateTimeField()
     updated_at = fields.DateTimeField()
-    file_attachment_ids = fields.ListField()
+    file_attachment_ids = fields.ListField(int)
     google_attachment_ids = fields.ListField()
     attachment_ids = fields.ListField()
     commit_identifier = fields.StringField()
