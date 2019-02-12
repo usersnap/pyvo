@@ -152,4 +152,3 @@ class Client(object):
         except AttributeError:
             request = self.request(uriparts=[k])
             return request
-
