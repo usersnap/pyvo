@@ -60,6 +60,3 @@ class PostValidators(object):
 
     def validate(self, value):
         pass
-
-
-
