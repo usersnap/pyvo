@@ -12,7 +12,7 @@ def generate_resources(response, client=None):
     def generate(resource):
         kind = resource['kind']
 
-        # print "generating {}".format(kind)
+        print("generating {}".format(kind))
 
         resource_class = {
             'project': Project,
