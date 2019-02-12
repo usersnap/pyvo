@@ -4,7 +4,6 @@ from project import MembershipSummary
 
 
 class Me(Instantiated, PivotalResource):
-
     name = fields.StringField()
     initials = fields.StringField()
     username = fields.StringField()
@@ -18,7 +17,6 @@ class Me(Instantiated, PivotalResource):
 
 
 class Person(Instantiated, PivotalResource):
-
     name = fields.StringField(required=True)
     email = fields.StringField(required=True)
     initials = fields.StringField()
@@ -26,14 +24,11 @@ class Person(Instantiated, PivotalResource):
     kind = fields.StringField()
 
 class ProjectMembership(Instantiated, PivotalResource):
-
     created_at = fields.DateTimeField()
     updated_at = fields.DateTimeField()
     person_id = fields.IntField()
     project_id = fields.IntField()
-    role = fields.StringField(
-        validators=OneOf('owner',
-            'member', 'viewer', 'inactive'))
+    role = fields.StringField(validators=OneOf('owner', 'member', 'viewer', 'inactive'))
     project_color = fields.StringField()
     favorite = fields.BoolField()
     last_viewed_at = fields.DateTimeField()

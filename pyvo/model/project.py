@@ -4,7 +4,6 @@ from metadata import TimeZone
 
 
 class Project(Instantiated, PivotalResource):
-
     name = fields.StringField(validators=PostValidators(RequiredOnPost()))
     version = fields.IntField()
     iteration_length = fields.IntField()
@@ -33,9 +32,7 @@ class Project(Instantiated, PivotalResource):
     current_velocity = fields.IntField()
     current_volatility = fields.FloatField()
     account_id = fields.IntField()
-    accounting_type = fields.StringField(
-        validators=OneOf('unbillable',
-            'billable', 'overhead'))
+    accounting_type = fields.StringField(validators=OneOf('unbillable', 'billable', 'overhead'))
     featured = fields.BoolField()
     story_ids = fields.ListField()
     epic_ids = fields.ListField()
@@ -46,11 +43,8 @@ class Project(Instantiated, PivotalResource):
 
 
 class MembershipSummary(Instantiated, PivotalResource):
-
     project_id = fields.IntField()
     project_name = fields.StringField()
     project_color = fields.StringField()
-    role = fields.StringField(
-        validators=OneOf('owner', 'member', 'viewer', 'inactive')
-    )
+    role = fields.StringField(validators=OneOf('owner', 'member', 'viewer', 'inactive'))
     last_viewed_at = fields.DateTimeField()

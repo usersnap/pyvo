@@ -7,12 +7,10 @@ from metadata import TimeZone, Label
 class Story(Instantiated, PivotalResource):
     name = fields.StringField()
     description = fields.StringField(validators=PostValidators(RequiredOnPost()))
-    story_type = fields.StringField(
-        validators=OneOf('feature', 'bug', 'chore', 'release')
-    )
+    story_type = fields.StringField(validators=OneOf('feature', 'bug', 'chore', 'release'))
     current_state = fields.StringField(
         validators=OneOf('accepted', 'delivered', 'finished',
-            'started', 'rejected', 'planned', 'unstarted', 'unscheduled')
+                         'started', 'rejected', 'planned', 'unstarted', 'unscheduled')
     )
     estimate = fields.FloatField()
     accepted_at = fields.DateTimeField()

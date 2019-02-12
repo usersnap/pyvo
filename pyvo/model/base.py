@@ -3,7 +3,6 @@ from jsonmodels.validators import ValidationError
 
 
 class PivotalResource(models.Base):
-
     @classmethod
     def with_client(cls, client, **data):
         resource = cls(**data)
